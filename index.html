@@ -4,38 +4,113 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Convite · Folegando</title>
+<title>Convite para treinar junto · Folegando</title>
+<meta name="description" content="Você foi chamado para uma turma no Folegando. Cada um treina do seu jeito; a turma vê, comemora e chama quem sumiu.">
+<meta property="og:title" content="Bora treinar junto no Folegando?">
+<meta property="og:description" content="Você foi chamado para uma turma. Qualquer treino conta: a turma vê, comemora e chama quem sumiu.">
+<meta property="og:image" content="https://folegando.com.br/og.png">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="https://folegando.com.br/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root { color-scheme: dark; }
-  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #000; color: #fff; font: 17px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
-  main { width: min(420px, 100% - 32px); }
-  h1 { display: flex; align-items: center; gap: 8px; font: 900 40px/1 "Barlow Condensed", "Arial Narrow", system-ui, sans-serif; margin: 0 0 12px; letter-spacing: .01em; }
-  h1 svg { width: 44px; height: 44px; flex: none; }
-  .ponto { color: #FF5A36; }
-  .codigo { font-size: 40px; font-weight: 800; letter-spacing: .25em; margin: 16px 0; }
-  a.botao { display: block; text-align: center; background: #FF5A36; color: #000; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; text-decoration: none; border-radius: 14px; padding: 16px; margin: 18px 0 12px; }
-  p { color: #E8E9EB; margin: 8px 0; }
-  .mini { color: #C9CCD1; font-size: 14px; }
+  /* Convite completo (D239): lê ?c=CÓDIGO e &t=Nome da turma da URL; não consulta o banco. */
+  :root { color-scheme: dark; --ar: #9FE7DC; --brasa: #FF5A36; --brasa2: #FF8A6F; --t2: #E5E5EA; --t3: #AEAEB2; --display: "Barlow Condensed", "Arial Narrow", sans-serif; --corpo: "Barlow", system-ui, sans-serif; }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; background: #000; color: #fff; font: 400 17px/1.55 var(--corpo); -webkit-font-smoothing: antialiased; overflow-x: clip; }
+  body::before { content: ""; position: fixed; width: 620px; height: 620px; right: -260px; top: -240px; border-radius: 50%; background: radial-gradient(circle, rgba(255,90,54,.2), transparent 62%); pointer-events: none; }
+  body::after { content: ""; position: fixed; width: 560px; height: 560px; left: -280px; bottom: -300px; border-radius: 50%; background: radial-gradient(circle, rgba(159,231,220,.16), transparent 62%); pointer-events: none; }
+  main { position: relative; z-index: 1; width: min(460px, 100% - 32px); margin: 0 auto; padding: 36px 0 48px; }
+  .lockup { display: inline-flex; align-items: center; gap: 8px; font: 900 32px/1 var(--display); text-decoration: none; color: #fff; }
+  .lockup svg { width: 38px; height: 38px; }
+  .ponto { color: var(--brasa); }
+  .eyebrow { font: 700 13px var(--corpo); letter-spacing: .14em; text-transform: uppercase; color: var(--ar); margin-top: 34px; }
+  h1 { font: 900 50px/.92 var(--display); text-transform: uppercase; margin: 10px 0 0; overflow-wrap: anywhere; }
+  h1 .vazado { display: block; color: transparent; -webkit-text-stroke: 1.5px var(--ar); }
+  .codigo { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 24px 0 0; padding: 14px 18px; border-radius: 18px; background: #141416; border: 1px solid #26262a; }
+  .codigo small { display: block; font: 600 12px var(--corpo); color: var(--t3); }
+  .codigo b { font: 900 38px/1 var(--display); letter-spacing: .2em; }
+  .codigo button { border: 0; border-radius: 999px; padding: 9px 14px; background: rgba(255,255,255,.1); color: #fff; font: 700 14px var(--corpo); cursor: pointer; }
+  .botao { display: block; text-align: center; background: var(--brasa); color: #fff; font: 900 22px var(--display); letter-spacing: .05em; text-transform: uppercase; text-decoration: none; border-radius: 999px; padding: 16px; margin: 16px 0 6px; box-shadow: 0 10px 40px -10px rgba(255,90,54,.7); }
+  .nota { font-size: 14px; color: var(--t3); margin: 0; text-align: center; }
+  .oque { display: grid; gap: 10px; margin: 30px 0 0; padding: 0; list-style: none; }
+  .oque li { display: flex; gap: 12px; align-items: center; color: var(--t2); }
+  .oque li span { width: 36px; height: 36px; flex: none; border-radius: 12px; background: rgba(159,231,220,.12); display: grid; place-items: center; font-size: 17px; }
+  h2 { font: 900 30px/1 var(--display); text-transform: uppercase; margin: 36px 0 14px; }
+  .passos { list-style: none; padding: 0; margin: 0; display: grid; gap: 16px; counter-reset: p; }
+  .passos > li { counter-increment: p; display: grid; grid-template-columns: 34px 1fr; gap: 12px; color: var(--t2); }
+  .passos > li::before { content: counter(p); width: 34px; height: 34px; border-radius: 50%; background: var(--ar); color: #000; display: grid; place-items: center; font: 900 17px var(--display); }
+  .passos b { color: #fff; }
+  .sistemas { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .sistemas a { display: block; text-align: center; padding: 12px 8px; border-radius: 14px; background: rgba(255,255,255,.08); color: #fff; text-decoration: none; font: 700 15px var(--corpo); border: 1px solid transparent; }
+  .sistemas a small { display: block; font: 500 12px var(--corpo); color: var(--t3); }
+  .sistemas a.seu { border-color: var(--ar); background: rgba(159,231,220,.1); }
+  .privado { margin-top: 32px; padding: 16px 18px; border-radius: 18px; background: #0d0d0f; border: 1px solid #1d1d20; font-size: 15px; color: var(--t3); }
+  .privado b { color: #fff; }
+  footer { margin-top: 30px; font-size: 14px; color: var(--t3); text-align: center; }
+  footer a { color: var(--ar); }
 </style>
 </head>
 <body>
 <main>
-  <!-- Lockup (D64, D74): anel + "folegando." em Barlow Condensed 900 -->
-  <h1><svg viewBox="18 18 72 72" aria-hidden="true"><g transform="translate(54 54) scale(1.05) translate(-54 -54)"><path d="M75.92 55.92 A22 22 0 1 1 52.08 32.08" fill="none" stroke="#9FE7DC" stroke-width="10" stroke-linecap="round"/><circle cx="69.56" cy="38.44" r="7" fill="#FF5A36"/></g></svg><span>folegando<span class="ponto">.</span></span></h1>
-  <p>Este é um convite para treinar com uma turma no Folegando.</p>
-  <div class="codigo" id="codigo">——</div>
+  <a class="lockup" href="https://folegando.com.br/turma"><svg viewBox="18 18 72 72" aria-hidden="true"><g transform="translate(54 54) scale(1.05) translate(-54 -54)"><path d="M75.92 55.92 A22 22 0 1 1 52.08 32.08" fill="none" stroke="#9FE7DC" stroke-width="10" stroke-linecap="round"/><circle cx="69.56" cy="38.44" r="7" fill="#FF5A36"/></g></svg><span>folegando<span class="ponto">.</span></span></a>
+
+  <div class="eyebrow">Convite para treinar junto</div>
+  <h1 id="titulo">Bora treinar<span class="vazado">com a turma<span class="ponto" style="-webkit-text-stroke:0">.</span></span></h1>
+
+  <div class="codigo">
+    <div><small>Código da turma</small><b id="codigo">——</b></div>
+    <button type="button" id="copiar">Copiar</button>
+  </div>
   <a class="botao" id="abrir" href="#">Abrir no Folegando</a>
-  <p class="mini">Se nada acontecer, o app ainda não está no seu celular: peça o link de instalação a quem te convidou. Depois, abra este convite de novo ou digite o código em Você › Turmas.</p>
+  <p class="nota">Já tem o app? O botão abre a turma direto.</p>
+
+  <ul class="oque">
+    <li><span>✓</span>Cada um registra o treino que fizer: caminhada, academia, yoga, futebol.</li>
+    <li><span>🔥</span>A turma vê, reage e comemora o “Tá pago!”.</li>
+    <li><span>👊</span>Sumiu na semana? A turma chama.</li>
+  </ul>
+
+  <h2>Ainda não tem o app?</h2>
+  <ol class="passos">
+    <li><div><b>Instale o Folegando.</b> Está em beta, gratuito.
+      <div class="sistemas">
+        <a id="android" href="https://folegando.com.br/android">Android<small>baixar o app</small></a>
+        <a id="iphone" href="https://folegando.com.br/turma#convidado">iPhone<small>ainda não tem: me avisa</small></a>
+      </div></div></li>
+    <li><span><b>Crie sua conta</b> no app.</span></li>
+    <li><span><b>Volte a este convite</b> e toque em Abrir no Folegando, ou digite o código em <b>Você › Turmas</b>.</span></li>
+  </ol>
+
+  <div class="privado"><b>Só a turma vê seus treinos.</b> Ninguém de fora, sem perfil público. Você sai da turma e apaga a conta quando quiser.</div>
+
+  <footer>O que é o Folegando? <a href="https://folegando.com.br/turma">folegando.com.br/turma</a></footer>
 </main>
 <script>
-  // Página estática sem dados: só lê o código da URL (?c=ABC234) e abre o app (folego://convite/ABC234).
-  var c = (new URLSearchParams(location.search).get('c') || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6);
+  // Página estática sem dados (D239): lê ?c=ABC234&t=Nome da turma e abre o app (folego://convite/ABC234).
+  var q = new URLSearchParams(location.search);
+  var c = (q.get('c') || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6);
+  var t = (q.get('t') || '').replace(/[\u0000-\u001f<>]/g, '').trim().slice(0, 40);
   document.getElementById('codigo').textContent = c || '——';
+  if (t) {
+    var h = document.getElementById('titulo');
+    h.textContent = 'Você foi chamado para';
+    var s = document.createElement('span');
+    s.className = 'vazado';
+    s.textContent = t;
+    h.appendChild(s);
+    document.title = t + ' · convite · Folegando';
+  }
   var link = 'folego://convite/' + c;
   document.getElementById('abrir').href = link;
-  if (c.length === 6) setTimeout(function () { location.href = link; }, 300);
+  document.getElementById('copiar').addEventListener('click', function () {
+    var b = this;
+    (navigator.clipboard ? navigator.clipboard.writeText(c) : Promise.reject()).then(function () { b.textContent = 'Copiado ✓'; }, function () { b.textContent = c; });
+  });
+  var ua = navigator.userAgent;
+  if (/Android/i.test(ua)) document.getElementById('android').classList.add('seu');
+  else if (/iPhone|iPad|iPod/i.test(ua)) document.getElementById('iphone').classList.add('seu');
+  if (c.length === 6 && /Android/i.test(ua)) setTimeout(function () { location.href = link; }, 300);
 </script>
 </body>
 </html>
